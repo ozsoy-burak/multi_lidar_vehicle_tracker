@@ -1,5 +1,3 @@
-<img width="1221" height="756" alt="image" src="https://github.com/user-attachments/assets/02263d41-39c8-4fa4-9efc-cb31020e1e95" /># Gazebo LiDAR Vehicle Detection & Tracking
-
 A ROS + Gazebo simulation environment for overhead 2D LiDAR-based vehicle detection, multi-object tracking, and velocity estimation. Five 2D LiDAR sensors are mounted on a fixed station 5 meters above a road scene containing controllable vehicle models (hatchback, SUV, etc.). Detected vehicles are tracked in real time using a Kalman filter with oriented bounding box estimation.
 
 ---
@@ -22,9 +20,11 @@ Gazebo World
 
 ---
 <img width="1221" height="756" alt="Screenshot from 2026-03-23 15-16-58" src="https://github.com/user-attachments/assets/2d8e2c70-4f3b-4307-b140-3d81eddb2fa0" />
+
 **Figure**: Simülation World (Vehicles, Roads and Lidar Station)
 
 <img width="1221" height="756" alt="Screenshot from 2026-03-23 15-18-14" src="https://github.com/user-attachments/assets/0c9fb752-0b9e-4ae3-8c64-70434e2f471a" />
+
 **Figure**: Simülation World - 2 (Vehicles, Roads and Lidar Station)
 
 

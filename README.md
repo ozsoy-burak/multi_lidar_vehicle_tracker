@@ -1,4 +1,4 @@
-# Gazebo LiDAR Vehicle Detection & Tracking
+<img width="1221" height="756" alt="image" src="https://github.com/user-attachments/assets/02263d41-39c8-4fa4-9efc-cb31020e1e95" /># Gazebo LiDAR Vehicle Detection & Tracking
 
 A ROS + Gazebo simulation environment for overhead 2D LiDAR-based vehicle detection, multi-object tracking, and velocity estimation. Five 2D LiDAR sensors are mounted on a fixed station 5 meters above a road scene containing controllable vehicle models (hatchback, SUV, etc.). Detected vehicles are tracked in real time using a Kalman filter with oriented bounding box estimation.
 
@@ -21,6 +21,12 @@ Gazebo World
 ```
 
 ---
+<img width="1221" height="756" alt="Screenshot from 2026-03-23 15-16-58" src="https://github.com/user-attachments/assets/2d8e2c70-4f3b-4307-b140-3d81eddb2fa0" />
+**Figure**: Simülation World (Vehicles, Roads and Lidar Station)
+
+<img width="1221" height="756" alt="Screenshot from 2026-03-23 15-18-14" src="https://github.com/user-attachments/assets/0c9fb752-0b9e-4ae3-8c64-70434e2f471a" />
+**Figure**: Simülation World - 2 (Vehicles, Roads and Lidar Station)
+
 
 ## Software Architecture
 
@@ -67,6 +73,14 @@ Subscribes to `/scan_filtered` and performs clustering, bounding box estimation,
 
 **Clustering (BFS-based DBSCAN):**
 Finite range readings are converted to Cartesian (x, y) points. A BFS expansion groups nearby points into clusters using a distance threshold of 0.5 m. Clusters with fewer than 5 points are discarded as noise.
+
+<img width="1920" height="1080" alt="Screenshot from 2025-10-15 11-48-40" src="https://github.com/user-attachments/assets/26325345-ab1f-4529-a5f7-bff795c0159a" />
+**Figure**: Cluster Using Filter Scan Data
+
+<img width="1920" height="1080" alt="Screenshot from 2025-10-15 11-49-04" src="https://github.com/user-attachments/assets/30b69206-e4a3-4e5c-a8d7-d4133b65a366" />
+**Figure**: Multiple Tracking
+
+
 
 **Oriented Bounding Box (OBB):**
 For each cluster, PCA is applied via Eigen's `SelfAdjointEigenSolver` on the 2D covariance matrix. The cluster is projected onto the principal axes to compute length and width. Box dimensions are smoothed over time using EMA (factor = 0.2) to reduce per-frame jitter.

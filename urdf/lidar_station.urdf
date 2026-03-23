@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot name="neor_mini">
+
+  <!-- Add Gazebo plugins -->
+    <!-- Load ros_control plugin using the steer_bot_hardware_gazebo
+    implementation of the hardware_interface::RobotHW -->
+
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotSimType>steer_bot_hardware_gazebo/SteerBotHardwareGazebo</robotSimType>
+      <legacyModeNS>false</legacyModeNS>
+    </plugin>
+  </gazebo>
+
+    <link name="base_link">
+    <!-- avoid root link inertia warnings, annotation -->
+    <inertial>
+      <origin
+        xyz="0.030649671440691 -1.79069899872708E-05 0.0558717976709459"
+        rpy="0 0 0" />
+      <mass
+        value="1.72617713171385" />
+      <inertia
+        ixx="0.0107311274569357"
+        ixy="-3.24164649120244E-08"
+        ixz="0.00169188715816868"
+        iyy="0.0198871551919603"
+        iyz="2.40252669081509E-07"
+        izz="0.0269841937242323" />
+    </inertial>
+ 
+  </link>
+
+  <joint name="rplidar_mount_joint" type="fixed">
+
+    <origin xyz="0.0 -0.38 0.0" rpy="1.57 0.0 0.0"/>
+    <parent link="base_link"/>
+    <child link="rplidar_link"/>
+  </joint>
+
+  <link name="rplidar_link">
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <cylinder radius="0.04" length="0.05"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.04" length="0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!--*********************************************************************-->
+<gazebo reference="rplidar_link">
+  <static>true</static>   
+  <gravity>false</gravity> 
+</gazebo>
+
+
+  <gazebo reference="rplidar_link">
+    <sensor type="ray" name="rplidar">
+      <pose>0 0 0 0 0 0</pose>
+      <gravity>0</gravity>
+      <static>true</static> 
+      <visualize>false</visualize>
+      <update_rate>30</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>720</samples> <!-- 0.5° çözünürlük -->
+            <resolution>1</resolution>
+            <min_angle>-3.14159265</min_angle> <!-- -180° -->
+            <max_angle>3.14159265</max_angle> <!-- +180° -->
+          </horizontal>
+          <vertical>
+            <samples>1</samples> <!-- 2D lidar, tek çizgi -->
+            <resolution>1</resolution>
+            <min_angle>0</min_angle>
+            <max_angle>0</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.15</min>
+          <max>12.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="gazebo_ros_laser_controller" filename="libgazebo_ros_laser.so">
+        <topicName>/scan</topicName>
+        <frameName>rplidar_link</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+  
+  <joint name="rplidar_mount_joint2" type="fixed">
+  <!-- LiDAR 2, base_link'e yakın konumda (x=0.2, y=0.0, z=5.0) -->
+  <origin xyz="0.0 -1.425 -1.0" rpy="0.0 -1.57 0"/>
+  <parent link="base_link"/>
+  <child link="rplidar_link2"/>
+</joint>
+
+<link name="rplidar_link2">
+  <inertial>
+    <mass value="0.01"/>
+    <origin xyz="0 0 0"/>
+    <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+  </inertial>
+  <visual>
+    <geometry>
+      <cylinder radius="0.04" length="0.05"/>
+    </geometry>
+    <material name="red"/>
+  </visual>
+  <collision>
+    <geometry>
+      <cylinder radius="0.04" length="0.05"/>
+    </geometry>
+  </collision>
+</link>
+
+<gazebo reference="rplidar_link2">
+  <static>true</static>
+  <gravity>false</gravity>
+</gazebo>
+
+<gazebo reference="rplidar_link2">
+  <sensor type="ray" name="rplidar2">
+    <pose>0 0 0 0 0 0</pose>
+    <visualize>false</visualize>
+    <update_rate>30</update_rate>
+    <ray>
+      <scan>
+        <horizontal>
+          <samples>720</samples>
+          <resolution>1</resolution>
+          <min_angle>-3.14159265</min_angle>
+          <max_angle>3.14159265</max_angle>
+        </horizontal>
+        <vertical>
+          <samples>1</samples>
+          <resolution>1</resolution>
+          <min_angle>0</min_angle>
+          <max_angle>0</max_angle>
+        </vertical>
+      </scan>
+      <range>
+        <min>0.15</min>
+        <max>12.0</max>
+        <resolution>0.01</resolution>
+      </range>
+      <noise>
+        <type>gaussian</type>
+        <mean>0.0</mean>
+        <stddev>0.01</stddev>
+      </noise>
+    </ray>
+    <plugin name="gazebo_ros_laser_controller2" filename="libgazebo_ros_laser.so">
+      <topicName>/scan2</topicName>
+      <frameName>rplidar_link2</frameName>
+    </plugin>
+  </sensor>
+</gazebo>
+
+
+
+  <joint name="rplidar_mount_joint3" type="fixed">
+  <!-- LiDAR 2, base_link'e yakın konumda (x=0.2, y=0.0, z=5.0) -->
+  <origin xyz="0.0 -2.48 0.0" rpy="1.57 0 0"/>
+  <parent link="base_link"/>
+  <child link="rplidar_link3"/>
+</joint>
+
+<link name="rplidar_link3">
+  <inertial>
+    <mass value="0.01"/>
+    <origin xyz="0 0 0"/>
+    <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+  </inertial>
+  <visual>
+    <geometry>
+      <cylinder radius="0.04" length="0.05"/>
+    </geometry>
+    <material name="red"/>
+  </visual>
+  <collision>
+    <geometry>
+      <cylinder radius="0.04" length="0.05"/>
+    </geometry>
+  </collision>
+</link>
+
+<gazebo reference="rplidar_link3">
+  <static>true</static>
+  <gravity>false</gravity>
+</gazebo>
+
+<gazebo reference="rplidar_link3">
+  <sensor type="ray" name="rplidar3">
+    <pose>0 0 0 0 0 0</pose>
+    <visualize>false</visualize>
+    <update_rate>30</update_rate>
+    <ray>
+      <scan>
+        <horizontal>
+          <samples>720</samples>
+          <resolution>1</resolution>
+          <min_angle>-3.14159265</min_angle>
+          <max_angle>3.14159265</max_angle>
+        </horizontal>
+        <vertical>
+          <samples>1</samples>
+          <resolution>1</resolution>
+          <min_angle>0</min_angle>
+          <max_angle>0</max_angle>
+        </vertical>
+      </scan>
+      <range>
+        <min>0.15</min>
+        <max>12.0</max>
+        <resolution>0.01</resolution>
+      </range>
+      <noise>
+        <type>gaussian</type>
+        <mean>0.0</mean>
+        <stddev>0.01</stddev>
+      </noise>
+    </ray>
+    <plugin name="gazebo_ros_laser_controller3" filename="libgazebo_ros_laser.so">
+      <topicName>/scan3</topicName>
+      <frameName>rplidar_link3</frameName>
+    </plugin>
+  </sensor>
+</gazebo>
+
+  <joint name="rplidar_mount_joint4" type="fixed">
+  <!-- LiDAR 2, base_link'e yakın konumda (x=0.2, y=0.0, z=5.0) -->
+  <origin xyz="0.0 1.62 -1.0" rpy="0.0 -1.57 0"/>
+  <parent link="base_link"/>
+  <child link="rplidar_link4"/>
+</joint>
+
+<link name="rplidar_link4">
+  <inertial>
+    <mass value="0.01"/>
+    <origin xyz="0 0 0"/>
+    <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+  </inertial>
+  <visual>
+    <geometry>
+      <cylinder radius="0.04" length="0.05"/>
+    </geometry>
+    <material name="red"/>
+  </visual>
+  <collision>
+    <geometry>
+      <cylinder radius="0.04" length="0.05"/>
+    </geometry>
+  </collision>
+</link>
+
+<gazebo reference="rplidar_link4">
+  <static>true</static>
+  <gravity>false</gravity>
+</gazebo>
+
+<gazebo reference="rplidar_link4">
+  <sensor type="ray" name="rplidar4">
+    <pose>0 0 0 0 0 0</pose>
+    <visualize>false</visualize>
+    <update_rate>30</update_rate>
+    <ray>
+      <scan>
+        <horizontal>
+          <samples>720</samples>
+          <resolution>1</resolution>
+          <min_angle>-3.14159265</min_angle>
+          <max_angle>3.14159265</max_angle>
+        </horizontal>
+        <vertical>
+          <samples>1</samples>
+          <resolution>1</resolution>
+          <min_angle>0</min_angle>
+          <max_angle>0</max_angle>
+        </vertical>
+      </scan>
+      <range>
+        <min>0.15</min>
+        <max>12.0</max>
+        <resolution>0.01</resolution>
+      </range>
+      <noise>
+        <type>gaussian</type>
+        <mean>0.0</mean>
+        <stddev>0.01</stddev>
+      </noise>
+    </ray>
+    <plugin name="gazebo_ros_laser_controller4" filename="libgazebo_ros_laser.so">
+      <topicName>/scan4</topicName>
+      <frameName>rplidar_link4</frameName>
+    </plugin>
+  </sensor>
+</gazebo>
+
+------
+
+  <joint name="rplidar_mount_joint5" type="fixed">
+  <!-- LiDAR 2, base_link'e yakın konumda (x=0.2, y=0.0, z=5.0) -->
+  <origin xyz="0.0 -4.48 -1.0" rpy="0.0 -1.57 0"/>
+  <parent link="base_link"/>
+  <child link="rplidar_link5"/>
+</joint>
+
+<link name="rplidar_link5">
+  <inertial>
+    <mass value="0.01"/>
+    <origin xyz="0 0 0"/>
+    <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+  </inertial>
+  <visual>
+    <geometry>
+      <cylinder radius="0.04" length="0.05"/>
+    </geometry>
+    <material name="red"/>
+  </visual>
+  <collision>
+    <geometry>
+      <cylinder radius="0.04" length="0.05"/>
+    </geometry>
+  </collision>
+</link>
+
+<gazebo reference="rplidar_link5">
+  <static>true</static>
+  <gravity>false</gravity>
+</gazebo>
+
+<gazebo reference="rplidar_link5">
+  <sensor type="ray" name="rplidar5">
+    <pose>0 0 0 0 0 0</pose>
+    <visualize>false</visualize>
+    <update_rate>30</update_rate>
+    <ray>
+      <scan>
+        <horizontal>
+          <samples>720</samples>
+          <resolution>1</resolution>
+          <min_angle>-3.14159265</min_angle>
+          <max_angle>3.14159265</max_angle>
+        </horizontal>
+        <vertical>
+          <samples>1</samples>
+          <resolution>1</resolution>
+          <min_angle>0</min_angle>
+          <max_angle>0</max_angle>
+        </vertical>
+      </scan>
+      <range>
+        <min>0.15</min>
+        <max>12.0</max>
+        <resolution>0.01</resolution>
+      </range>
+      <noise>
+        <type>gaussian</type>
+        <mean>0.0</mean>
+        <stddev>0.01</stddev>
+      </noise>
+    </ray>
+    <plugin name="gazebo_ros_laser_controller5" filename="libgazebo_ros_laser.so">
+      <topicName>/scan5</topicName>
+      <frameName>rplidar_link5</frameName>
+    </plugin>
+  </sensor>
+</gazebo>
+
+</robot>
